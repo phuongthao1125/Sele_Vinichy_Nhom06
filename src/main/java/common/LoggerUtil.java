@@ -9,9 +9,21 @@ public class LoggerUtil {
 
     public static final Logger log = LogManager.getLogger(LoggerUtil.class);
 
+    static {
+        System.setProperty("file.encoding", "UTF-8");
+        java.io.File logDir = new java.io.File("logs");
+        if (!logDir.exists()) {
+            logDir.mkdirs();
+        }
+        try {
+            System.setOut(new java.io.PrintStream(System.out, true, "UTF-8"));
+            System.setErr(new java.io.PrintStream(System.err, true, "UTF-8"));
+        } catch (java.io.UnsupportedEncodingException ignored) {}
+    }
+
     private static ExtentTest getTest() {
         try {
-            return ExtentManager.getTest();
+            return ExtentListener.getTest();
         } catch (Exception e) {
             return null;
         }

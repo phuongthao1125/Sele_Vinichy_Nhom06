@@ -2,16 +2,19 @@ package common;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import java.io.File;
 
 public class ExtentManager {
 
     private static ExtentReports extent;
 
     public static ExtentReports getInstance() {
-        LoggerUtil.log.info("Get ExtentReports instance");
-
         if (extent == null) {
-            LoggerUtil.info("Create new ExtentReports instance");
+            // Đảm bảo thư mục reports tồn tại
+            File reportDir = new File("reports");
+            if (!reportDir.exists()) {
+                reportDir.mkdirs();
+            }
 
             ExtentSparkReporter spark = new ExtentSparkReporter("reports/extent.html");
             spark.config().setReportName("Automation Test Report");
@@ -19,8 +22,6 @@ public class ExtentManager {
 
             extent = new ExtentReports();
             extent.attachReporter(spark);
-
-            LoggerUtil.info("ExtentReports initialized successfully");
         }
 
         return extent;

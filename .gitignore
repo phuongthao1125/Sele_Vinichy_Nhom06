@@ -37,3 +37,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Build & Logs ###
+target/
+allure-results/
+logs/
+reports/
+.idea/

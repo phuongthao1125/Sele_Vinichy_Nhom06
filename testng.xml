@@ -9,15 +9,10 @@
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 
-    <test name="All Tests">
+    <test name="Login Tests">
         <classes>
             <class name="testcases.LoginTests"/>
-            <class name="testcases.RegisterTest"/>
-            <class name="testcases.BookTicketTest"/>
-            <class name="testcases.MyTicketTest"/>
-            <class name="testcases.TimeTableTest"/>
-            <class name="testcases.ForgetPasswordTest"/>
-            <class name="testcases.ChangePasswordTest"/>
+            <class name="testcases.LogoutTests"/>
         </classes>
     </test>
 

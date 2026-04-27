@@ -24,9 +24,6 @@ public class WaitUtil {
             LoggerUtil.error("=== TIMEOUT waiting for: " + locator);
             LoggerUtil.error("=== Current URL: " + Constant.WEBDRIVER.getCurrentUrl());
             LoggerUtil.error("=== Page title: " + Constant.WEBDRIVER.getTitle());
-            String bodyText = (String) ((JavascriptExecutor) Constant.WEBDRIVER)
-                    .executeScript("return document.body.innerText");
-            LoggerUtil.error("=== Body text:\n" + bodyText);
             throw e;
         }
     }
@@ -78,27 +75,15 @@ public class WaitUtil {
     }
 
     public static boolean isVisible(By locator) {
-        LoggerUtil.info("Check visibility of element: " + locator);
+        return isVisible(locator, TIMEOUT_SECONDS);
+    }
+
+    public static boolean isVisible(By locator, int timeout) {
         try {
-            WebDriverWait wait = new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(TIMEOUT_SECONDS));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(timeout))
+                    .until(ExpectedConditions.visibilityOfElementLocated(locator));
             return true;
-        } catch (TimeoutException | NoSuchElementException e) {
-            // Nếu locator là linkText thì tìm link gần giống nhất để chỉ ra sự khác biệt
-            if (locator.toString().contains("link text")) {
-                String expectedText = locator.toString().replaceAll("By.linkText: ", "").trim();
-                try {
-                    List<WebElement> links = Constant.WEBDRIVER.findElements(By.tagName("a"));
-                    for (WebElement link : links) {
-                        String actualText = link.getText().trim();
-                        if (actualText.equalsIgnoreCase(expectedText.replace(" ", ""))
-                                || actualText.toLowerCase().contains(expectedText.toLowerCase().replace(" ", ""))) {
-                            LoggerUtil.warn("Link text mismatch — Expected: [" + expectedText + "] but page has: [" + actualText + "]");
-                            break;
-                        }
-                    }
-                } catch (Exception ignored) {}
-            }
+        } catch (Exception e) {
             return false;
         }
     }
@@ -111,9 +96,6 @@ public class WaitUtil {
             LoggerUtil.error("=== TIMEOUT waiting for clickable: " + locator);
             LoggerUtil.error("=== Current URL: " + Constant.WEBDRIVER.getCurrentUrl());
             LoggerUtil.error("=== Page title: " + Constant.WEBDRIVER.getTitle());
-            String bodyText = (String) ((JavascriptExecutor) Constant.WEBDRIVER)
-                    .executeScript("return document.body.innerText");
-            LoggerUtil.error("=== Body text:\n" + bodyText);
             throw e;
         }
     }
@@ -161,4 +143,22 @@ public class WaitUtil {
         LoggerUtil.info("Send keys success: " + locator);
     }
 
+    public static WebElement waitForPresent(By locator) {
+        LoggerUtil.info("Wait for present: " + locator);
+        try {
+            return getWait().until(ExpectedConditions.presenceOfElementLocated(locator));
+        } catch (TimeoutException e) {
+            LoggerUtil.error("=== TIMEOUT waiting for presence of: " + locator);
+            throw e;
+        }
+    }
+
+    public static boolean isNotVisible(By locator, int timeout) {
+        try {
+            return new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(timeout))
+                    .until(ExpectedConditions.invisibilityOfElementLocated(locator));
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

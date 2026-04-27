@@ -13,6 +13,10 @@ public class ExtentListener implements ITestListener {
     private static final ExtentReports extent = ExtentManager.getInstance();
     private static final ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
+    public static ExtentTest getTest() {
+        return test.get();
+    }
+
     @Override
     public void onTestStart(ITestResult result) {
         LoggerUtil.info("Create Extent test node: " + result.getMethod().getMethodName());
