@@ -125,14 +125,25 @@ public class WaitUtil {
         try {
             element.click();
             LoggerUtil.info("Click success: " + locator);
-        } catch (ElementClickInterceptedException | StaleElementReferenceException e) {
-            LoggerUtil.warn("Normal click failed, retry with JS click: " + locator);
-            element = waitForClickable(locator);
-            JavascriptExecutor js = (JavascriptExecutor) Constant.WEBDRIVER;
-            js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
-            js.executeScript("arguments[0].click();", element);
-            LoggerUtil.info("JS click success: " + locator);
+        } catch (StaleElementReferenceException | ElementNotInteractableException e) {
+            LoggerUtil.warn("Normal click failed (" + e.getClass().getSimpleName() + "), retry with JS click: " + locator);
+            try {
+                element = waitForPresent(locator);
+                JavascriptExecutor js = (JavascriptExecutor) Constant.WEBDRIVER;
+                js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+                js.executeScript("arguments[0].click();", element);
+                LoggerUtil.info("JS click success: " + locator);
+            } catch (Exception ex) {
+                LoggerUtil.error("JS click also failed: " + ex.getMessage());
+                throw e;
+            }
         }
+    }
+
+    public static void waitForPageLoad() {
+        LoggerUtil.info("Wait for page to load completely");
+        getWait().until(driver -> ((JavascriptExecutor) driver)
+                .executeScript("return document.readyState").equals("complete"));
     }
 
     public static void sendKeys(By locator, String text) {

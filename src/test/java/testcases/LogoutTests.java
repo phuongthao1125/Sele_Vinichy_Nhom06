@@ -3,6 +3,7 @@ package testcases;
 import common.Constant;
 import common.LoggerUtil;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -127,29 +128,34 @@ public class LogoutTests {
         Assert.assertTrue(isLoggedOut, "Tab 1 vẫn còn đăng nhập sau khi Tab 2 logout");
     }
 
-    @Test(description = "TC06-UI001 - Kiểm tra hiển thị nút/ liên kết Đăng xuất")
+    @Test(description = "TC06-UI001 - Kiểm tra các thành phần hiển thị của popup tài khoản")
     public void TC06_UI001() {
         LoggerUtil.info("START TEST: TC06_UI001");
         loginPage.login(Constant.USERNAME, Constant.PASSWORD);
         homePage.openAccountMenu();
         
-        String actualText = homePage.getBtnLogout().getText().trim();
-        String expectedText = "Đăng xuất";
+        // 1. Kiểm tra Tiêu đề
+        String title = homePage.getLblAccountMenuTitle().getText().trim();
+        Assert.assertEquals(title, "TÀI KHOẢN CỦA TÔI", "Tiêu đề popup tài khoản không đúng");
         
-        LoggerUtil.info("Result: Exp contains '" + expectedText + "' | Act='" + actualText + "'");
-        Assert.assertTrue(actualText.contains(expectedText), "Nút Đăng xuất hiển thị sai text");
-    }
-
-    @Test(description = "TC06-UI002 - Kiểm tra khả năng click của mục Đăng xuất")
-    public void TC06_UI002() {
-        LoggerUtil.info("START TEST: TC06_UI002");
-        loginPage.login(Constant.USERNAME, Constant.PASSWORD);
-        homePage.openAccountMenu();
+        // 2. Kiểm tra Avatar (chữ cái)
+        WebElement avatar = homePage.getLetterAvatar();
+        Assert.assertTrue(avatar.isDisplayed(), "Avatar không hiển thị");
+        Assert.assertFalse(avatar.getText().trim().isEmpty(), "Avatar không hiển thị chữ cái");
         
-        boolean isClickable = homePage.getBtnLogout().isEnabled();
-        LoggerUtil.info("Result: Clickable=" + isClickable);
+        // 3. Kiểm tra Email người dùng
+        String email = homePage.getLblUserEmail().getText().trim();
+        Assert.assertEquals(email, Constant.USERNAME, "Email hiển thị không đúng");
         
-        Assert.assertTrue(isClickable, "Nút Đăng xuất không thể click");
+        // 4. Kiểm tra các mục chức năng
+        Assert.assertTrue(homePage.getBtnOrderHistory().isDisplayed(), "Mục Lịch sử đơn hàng không hiển thị");
+        Assert.assertTrue(homePage.getBtnShippingInfo().isDisplayed(), "Mục Thông tin giao hàng không hiển thị");
+        Assert.assertTrue(homePage.getBtnLogout().isDisplayed(), "Mục Đăng xuất không hiển thị");
+        
+        // Kiểm tra text của các mục
+        Assert.assertEquals(homePage.getBtnOrderHistory().getText().trim(), "Lịch sử đơn hàng");
+        Assert.assertEquals(homePage.getBtnShippingInfo().getText().trim(), "Thông tin giao hàng");
+        Assert.assertTrue(homePage.getBtnLogout().getText().trim().contains("Đăng xuất"));
     }
 }
 

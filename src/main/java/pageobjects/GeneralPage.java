@@ -10,7 +10,11 @@ import org.openqa.selenium.WebElement;
 public class GeneralPage {
 
     private final By _imgAccount = By.xpath("//img[@alt='Tài khoản']");
-    private final By _lblAccountMenuTitle = By.xpath("//div[text()='ĐĂNG NHẬP'] | //h5[contains(.,'TÀI KHOẢN CỦA TÔI')]");
+    private final By _lblAccountMenuTitle = By.xpath("//h5[contains(.,'TÀI KHOẢN CỦA TÔI')]");
+    private final By _letterAvatar = By.className("letter-avatar");
+    private final By _lblUserEmail = By.xpath("//div[@id='accountPopup']//p[contains(text(), '@')]");
+    private final By _btnOrderHistory = By.xpath("//button[contains(.,'Lịch sử đơn hàng')]");
+    private final By _btnShippingInfo = By.id("btnShippingInfo");
     private final By _btnLogout = By.xpath("//p[contains(.,'Đăng xuất')]");
 
     public WebElement getBtnLogout() {
@@ -25,10 +29,15 @@ public class GeneralPage {
         return WaitUtil.waitForVisible(By.xpath("//*[contains(@onclick,'doLogout') or contains(@onclick,'logout')]"));
     }
     public WebElement getLblAccountMenuTitle() { return WaitUtil.waitForVisible(_lblAccountMenuTitle); }
+    public WebElement getLetterAvatar() { return WaitUtil.waitForVisible(_letterAvatar); }
+    public WebElement getLblUserEmail() { return WaitUtil.waitForVisible(_lblUserEmail); }
+    public WebElement getBtnOrderHistory() { return WaitUtil.waitForVisible(_btnOrderHistory); }
+    public WebElement getBtnShippingInfo() { return WaitUtil.waitForVisible(_btnShippingInfo); }
 
     public void open(String url) {
         LoggerUtil.info("Mở URL: " + url);
         Constant.WEBDRIVER.navigate().to(url);
+        WaitUtil.waitForPageLoad();
     }
 
     public void openAccountMenu() {
