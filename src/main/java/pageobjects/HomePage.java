@@ -27,4 +27,8 @@ public class HomePage extends GeneralPage {
             return false;
         }
     }
+
+    public boolean isHomePageDisplayed() {
+        return isWelcomeDisplayed();
+    }
 }
