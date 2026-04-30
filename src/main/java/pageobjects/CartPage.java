@@ -260,7 +260,8 @@ public class CartPage extends GeneralPage {
 
     /**
      * Kiểm tra popup đăng nhập có hiển thị không (dùng cho TC10_F001).
-     * Nếu selector chưa đúng, cập nhật By loginPopup theo class/id thực tế của dự án.
+     * Nếu selector chưa đúng, cập nhật By loginPopup theo class/id thực tế của dự
+     * án.
      */
     public boolean isLoginPopupDisplayed() {
         return WaitUtil.isVisible(loginPopup, 3);
@@ -269,15 +270,13 @@ public class CartPage extends GeneralPage {
     public void simulateApiErrorForQuantity() {
         executeJs(
                 "window.originalFetch = window.fetch;" +
-                        "window.fetch = function(){ return Promise.reject(new Error('mock quantity error')); };"
-        );
+                        "window.fetch = function(){ return Promise.reject(new Error('mock quantity error')); };");
     }
 
     public void simulateApiErrorForVariant() {
         executeJs(
                 "window.originalFetch = window.fetch;" +
-                        "window.fetch = function(){ return Promise.reject(new Error('mock variant error')); };"
-        );
+                        "window.fetch = function(){ return Promise.reject(new Error('mock variant error')); };");
     }
 
     public void restoreFetch() {
@@ -323,7 +322,8 @@ public class CartPage extends GeneralPage {
 
     private long parseMoney(String text) {
         String number = text.replaceAll("[^0-9]", "");
-        if (number.isEmpty()) return 0;
+        if (number.isEmpty())
+            return 0;
         return Long.parseLong(number);
     }
 
@@ -334,7 +334,8 @@ public class CartPage extends GeneralPage {
     private void sleep(long ms) {
         try {
             Thread.sleep(ms);
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException ignored) {
+        }
     }
 
     // ================= UI METHODS =================
