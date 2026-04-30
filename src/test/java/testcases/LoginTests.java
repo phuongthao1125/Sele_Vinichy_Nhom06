@@ -149,88 +149,35 @@ public class LoginTests {
         Assert.assertTrue(isActive, "Should show register popup");
     }
 
-    @Test(description = "TC05-UI001 - Textbox Email")
+    @Test(description = "TC05-UI001 - Kiểm tra các thành phần hiển thị của popup đăng nhập")
     public void TC05_UI001() {
         LoggerUtil.info("START TEST: TC05-UI001");
-        String actual = loginPage.getTxtEmail().getAttribute("placeholder").trim();
-        String expected = "Nhập email";
         
-        LoggerUtil.info("Result: Exp=" + expected + " | Act=" + actual);
-        Assert.assertEquals(actual, expected, "Email placeholder is incorrect");
-    }
-
-    @Test(description = "TC05-UI002 - Textbox Password")
-    public void TC05_UI002() {
-        LoggerUtil.info("START TEST: TC05-UI002");
-        String actualPlaceholder = loginPage.getTxtPassword().getAttribute("placeholder").trim();
-        String actualType = loginPage.getTxtPassword().getAttribute("type").trim();
-        String expectedPlaceholder = "Nhập mật khẩu";
-        String expectedType = "password";
+        // 1. Kiểm tra Tiêu đề
+        String title = loginPage.getLblTitle().getText().trim();
+        Assert.assertEquals(title, "ĐĂNG NHẬP", "Tiêu đề popup không đúng");
         
-        LoggerUtil.info("Result: ExpPlaceholder=" + expectedPlaceholder + " | ActPlaceholder=" + actualPlaceholder);
-        Assert.assertEquals(actualPlaceholder, expectedPlaceholder, "Password placeholder is incorrect");
-        Assert.assertEquals(actualType, expectedType, "Password field should hide input");
-    }
-
-    @Test(description = "TC05-UI003 - Link Quên mật khẩu")
-    public void TC05_UI003() {
-        LoggerUtil.info("START TEST: TC05-UI003");
-        String actual = loginPage.getLinkForgetPassword().getText().trim();
-        String expected = "Quên mật khẩu";
+        // 2. Kiểm tra Mô tả
+        String desc = loginPage.getLblDescription().getText().trim();
+        Assert.assertEquals(desc, "Nhập email và mật khẩu của bạn", "Mô tả popup không đúng");
         
-        LoggerUtil.info("Result: Exp=" + expected + " | Act=" + actual);
-        Assert.assertEquals(actual, expected, "Forget password link text is incorrect");
-    }
-
-    @Test(description = "TC05-UI004 - Button Đăng nhập")
-    public void TC05_UI004() {
-        LoggerUtil.info("START TEST: TC05-UI004");
-        String actual = loginPage.getBtnLogin().getText().trim();
-        if(actual.isEmpty()) actual = loginPage.getBtnLogin().getAttribute("value").trim();
-        String expected = "Đăng nhập";
+        // 3. Kiểm tra Label và Input Email
+        Assert.assertEquals(loginPage.getLblEmail().getText().trim(), "Tên đăng nhập");
+        Assert.assertEquals(loginPage.getTxtEmail().getAttribute("placeholder"), "Nhập email");
         
-        LoggerUtil.info("Result: Exp=" + expected + " | Act=" + actual);
-        Assert.assertTrue(actual.contains(expected), "Login button text is incorrect");
-    }
-
-    @Test(description = "TC05-UI005 - Link Đăng ký")
-    public void TC05_UI005() {
-        LoggerUtil.info("START TEST: TC05-UI005");
-        String actual = loginPage.getLinkRegister().getText().trim();
-        String expected = "Đăng ký tài khoản";
+        // 4. Kiểm tra Label và Input Password
+        Assert.assertEquals(loginPage.getLblPassword().getText().trim(), "Mật khẩu");
+        Assert.assertEquals(loginPage.getTxtPassword().getAttribute("placeholder"), "Nhập mật khẩu");
+        Assert.assertEquals(loginPage.getTxtPassword().getAttribute("type"), "password");
         
-        LoggerUtil.info("Result: ActText contains '" + expected + "'");
-        Assert.assertTrue(actual.contains(expected), "Register link text is incorrect");
-    }
-
-    @Test(description = "TC05-UI006 - Tiêu đề")
-    public void TC05_UI006() {
-        LoggerUtil.info("START TEST: TC05-UI006");
-        String actual = loginPage.getLblTitle().getText().trim();
-        String expected = "ĐĂNG NHẬP - Nhập email và mật khẩu của bạn:";
+        // 5. Kiểm tra Link Quên mật khẩu
+        Assert.assertEquals(loginPage.getLinkForgetPassword().getText().trim(), "Quên mật khẩu");
         
-        LoggerUtil.info("Result: Exp=" + expected + " | Act=" + actual);
-        Assert.assertTrue(actual.contains("ĐĂNG NHẬP"), "Page title is incorrect");
-    }
-
-    @Test(description = "TC05-UI007 - Label Email")
-    public void TC05_UI007() {
-        LoggerUtil.info("START TEST: TC05-UI007");
-        String actual = loginPage.getLblEmail().getText().trim();
-        String expected = "Tên đăng nhập";
+        // 6. Kiểm tra Nút Đăng nhập
+        Assert.assertTrue(loginPage.getBtnLogin().getText().contains("Đăng nhập"), "Nút Đăng nhập không đúng text");
         
-        LoggerUtil.info("Result: Exp=" + expected + " | Act=" + actual);
-        Assert.assertEquals(actual, expected, "Email label is incorrect");
-    }
-
-    @Test(description = "TC05-UI008 - Label Password")
-    public void TC05_UI008() {
-        LoggerUtil.info("START TEST: TC05-UI008");
-        String actual = loginPage.getLblPassword().getText().trim();
-        String expected = "Mật khẩu";
-        
-        LoggerUtil.info("Result: Exp=" + expected + " | Act=" + actual);
-        Assert.assertEquals(actual, expected, "Password label is incorrect");
+        // 7. Kiểm tra Link Đăng ký
+        Assert.assertTrue(loginPage.getLinkRegister().getText().contains("Đăng ký tài khoản"), "Link đăng ký không đúng text");
     }
 }
 

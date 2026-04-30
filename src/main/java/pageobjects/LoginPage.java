@@ -9,7 +9,8 @@ import org.openqa.selenium.WebElement;
 public class LoginPage extends GeneralPage {
 
     // Locators chính xác theo cấu trúc thực tế của website
-    private final By _lblTitle = By.xpath("//div[div[text()='ĐĂNG NHẬP']]");
+    private final By _lblTitle = By.xpath("//div[@id='loginPopup']//div[text()='ĐĂNG NHẬP']");
+    private final By _lblDescription = By.xpath("//div[@id='loginPopup']//div[contains(text(),'Nhập email và mật khẩu')]");
     private final By _lblEmail = By.xpath("//label[contains(.,'Tên đăng nhập')]");
     private final By _lblPassword = By.xpath("//label[contains(.,'Mật khẩu')]");
 
@@ -18,7 +19,7 @@ public class LoginPage extends GeneralPage {
     private final By _btnLogin = By.xpath("//button[contains(.,'Đăng nhập')]");
 
     private final By _linkForgetPassword = By.xpath("//span[contains(.,'Quên mật khẩu')]");
-    private final By _linkRegister = By.xpath("//span[contains(.,'Bạn chưa có tài khoản? Đăng ký tài khoản')]");
+    private final By _linkRegister = By.xpath("//div[@id='loginPopup']//span[contains(.,'Đăng ký tài khoản')]");
 
     // Locators cho thông báo lỗi
     private final By _lblEmailError = By.id("loginEmailError");
@@ -28,6 +29,7 @@ public class LoginPage extends GeneralPage {
 
     // Elements
     public WebElement getLblTitle() { return WaitUtil.waitForVisible(_lblTitle); }
+    public WebElement getLblDescription() { return WaitUtil.waitForVisible(_lblDescription); }
     public WebElement getLblEmail() { return WaitUtil.waitForVisible(_lblEmail); }
     public WebElement getLblPassword() { return WaitUtil.waitForVisible(_lblPassword); }
 
