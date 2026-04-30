@@ -16,10 +16,10 @@ public class ScreenshotListener extends TestListenerAdapter {
 
     @Override
     public void onTestFailure(ITestResult result) {
-        LoggerUtil.log.error("Test failed: " + result.getName());
+        LoggerUtil.error("Test failed: " + result.getName());
 
         if (Constant.WEBDRIVER == null) {
-            LoggerUtil.log.warn("WEBDRIVER is null, cannot capture screenshot");
+            LoggerUtil.warn("WEBDRIVER is null, cannot capture screenshot");
             return;
         }
 
@@ -56,7 +56,7 @@ public class ScreenshotListener extends TestListenerAdapter {
             LoggerUtil.info("Screenshot saved at: " + destFile.getAbsolutePath());
 
         } catch (IOException e) {
-            LoggerUtil.log.error("Failed to save screenshot", e);
+            LoggerUtil.error("Failed to save screenshot: " + e.getMessage());
             e.printStackTrace();
         }
     }

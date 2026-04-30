@@ -11,12 +11,16 @@
 
     <test name="Cart Tests">
         <classes>
-
             <class name="testcases.LoginTests"/>
             <class name="testcases.DeliveryInfoTests"/>
             <class name="testcases.CartTests"/>
             <class name="testcases.LogoutTests"/>
+        </classes>
+    </test>
 
+    <test name="Order Tests">
+        <classes>
+            <class name="testcases.OrderTests"/>
         </classes>
     </test>
 

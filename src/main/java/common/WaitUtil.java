@@ -149,7 +149,12 @@ public class WaitUtil {
     public static void sendKeys(By locator, String text) {
         LoggerUtil.info("Send keys to element: " + locator + " | text: " + text);
         WebElement element = waitForVisible(locator);
-        element.clear();
+        try {
+            element.clear();
+        } catch (Exception e) {
+            LoggerUtil.warn("Không thể xóa element bằng lệnh chuẩn, thử bằng JS: " + locator);
+            ((JavascriptExecutor) Constant.WEBDRIVER).executeScript("arguments[0].value = '';", element);
+        }
         element.sendKeys(text);
         LoggerUtil.info("Send keys success: " + locator);
     }
@@ -168,6 +173,16 @@ public class WaitUtil {
         try {
             return new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(timeout))
                     .until(ExpectedConditions.invisibilityOfElementLocated(locator));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isAlertPresent(int timeout) {
+        try {
+            new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(timeout))
+                    .until(ExpectedConditions.alertIsPresent());
+            return true;
         } catch (Exception e) {
             return false;
         }
